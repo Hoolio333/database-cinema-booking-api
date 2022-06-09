@@ -1,16 +1,33 @@
 const prisma = require("../utils/prisma");
 
-const createTicket = async (req, res) => {
-  const ticket = await prisma.ticket.create({
+const addTicket = async (req, res) => {
+  const { screeningId, customerId } = req.body;
+
+  const createdTicket = await prisma.ticket.create({
     data: {
-      screeningId: Number(req.body.screeningId),
-      customerId: Number(req.body.customerId),
+      screening: {
+        connect: { id: screeningId },
+      },
+      customer: {
+        connect: { id: customerId },
+      },
     },
   });
 
-  res.json({ data: ticket });
+  res.json({ data: createdTicket });
 };
 
 module.exports = {
-  createTicket,
+  addTicket,
 };
+
+// const createTicket = async (req, res) => {
+//   const ticket = await prisma.ticket.create({
+//     data: {
+//       screeningId: Number(req.body.screeningId),
+//       customerId: Number(req.body.customerId),
+//     },
+//   });
+
+//   res.json({ data: ticket });
+// };
